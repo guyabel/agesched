@@ -9,7 +9,7 @@
 #' for a given set of parameter values and sequence of ages.
 #'
 #' @param tot_mig Total migration of the returned age schedule.
-#' @param x Sequence of ages.
+#' @param x Vector for the sequence of ages.
 #' @param a1 Numeric value for height pre-labour force curve.
 #' @param alpha1 Numeric value for descent of pre-labour force curve.
 #' @param a2 Numeric value for height of labour force curve.
@@ -31,37 +31,38 @@
 #'
 #' The default values of the parameters match the fundamental parameters of a simplified basic standard schedule migration schedule given in Rogers and Castro (1981). See examples below for non-zero parameters for the post-labour force and post-retirement slopes.
 #'
-#'
 #' @references Rogers, A. and Castro. L. J. (1981). Model Migration Schedules. \emph{IIASA Research Report 81} RR-81-30
+#' @references Rogers, A. (1982). Parametrized Multistate Population Dynamics. \emph{IIASA Working Paper} WP-82-125
 #' @references Rogers, A., Little, J. and Raymer J. (2010). \emph{The Indirect Estimation of Migration.} Springer Series on Demographic Methods and Population Analysis 26
 #' @author Guy J. Abel
 #' @seealso \code{\link{rogerscastro7}}, \code{\link{rogerscastro9}}, \code{\link{rogerscastro11}}
+#' @export
 #' @examples
 #' #single year
-#' f0 <- rogerscastro13(tot_mig = 100, x = seq(0, 100, 1),
-#'                      a1 = 0.02, alpha1 = 0.1,
-#'                      a2 = 0.06, mu2 = 20, alpha2 = 0.1, lambda2 = 0.4,
-#'                      a3 = 0.01, alpha3 = 0.1, mu3 = 70, lambda3 = 0.1,
-#'                      a4 = 0.005, lambda4 = 0.005,
-#'                      c = 0.03)
+#' f0 <- rc13(tot_mig = 100, x = seq(0, 100, 1),
+#'            a1 = 0.02, alpha1 = 0.1,
+#'            a2 = 0.06, mu2 = 20, alpha2 = 0.1, lambda2 = 0.4,
+#'            a3 = 0.01, alpha3 = 0.1, mu3 = 70, lambda3 = 0.1,
+#'            a4 = 0.005, lambda4 = 0.005,
+#'            c = 0.03)
 #' plot(f0, type = "l")
 #'
 #' #five year
-#' f1 <- rogerscastro13(tot_mig = 0.05, x = seq(0, 100, 5),
-#'                      a1 = 0.02, alpha1 = 0.1,
-#'                      a2 = 0.06, mu2 = 25, alpha2 = 0.1, lambda2 = 0.4,
-#'                      a3 = 0.01, alpha3 = 0.2, mu3 = 75, lambda3 = 0.1,
-#'                      a4 = 0.01, lambda4 = 0.005,
-#'                      c = 0.05)
+#' f1 <- rc13(tot_mig = 0.05, x = seq(0, 100, 5),
+#'            a1 = 0.02, alpha1 = 0.1,
+#'            a2 = 0.06, mu2 = 25, alpha2 = 0.1, lambda2 = 0.4,
+#'            a3 = 0.01, alpha3 = 0.2, mu3 = 75, lambda3 = 0.1,
+#'            a4 = 0.01, lambda4 = 0.005,
+#'            c = 0.05)
 #' plot(f1, type = "l")
 #' sum(f1)
-rogerscastro13 <- function(tot_mig = 1, x = seq(from = 0, to = 100, by = 1),
-                           a1 = 0.02, alpha1 = 0.1,
-                           a2 = 0.06, mu2 = 20, alpha2 = 0.1, lambda2 = 0.4,
-                           a3 = 0, alpha3 = 0, mu3 = 0, lambda3 = 0,
-                           a4 = 0, lambda4 = 0,
-                           c = 0.03,
-                           scaled = TRUE){
+rc13 <- function(tot_mig = 1, x = seq(from = 0, to = 100, by = 1),
+                 a1 = 0.02, alpha1 = 0.1,
+                 a2 = 0.06, mu2 = 20, alpha2 = 0.1, lambda2 = 0.4,
+                 a3 = 0, alpha3 = 0, mu3 = 0, lambda3 = 0,
+                 a4 = 0, lambda4 = 0,
+                 c = 0.03,
+                 scaled = TRUE){
   m0 <- a1 * exp(-alpha1 * x) +
     a2 * exp(-alpha2 * (x - mu2) - exp(-lambda2*(x - mu2))) +
     a3 * exp(-alpha3 * (x - mu3) - exp(-lambda3*(x - mu3))) +
