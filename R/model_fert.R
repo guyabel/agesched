@@ -1,5 +1,7 @@
 #' Model Fertility Model Schedule.
 #'
+#' Scales a `model`` fertility schedule to match a given TFR.
+#'
 #' @param tfr Numeric value for total fertitliy rate of the returned age schedule.
 #' @param x Vector for the sequence of ages.
 #' @param model Vector of a `model` age specific fertility rates.
@@ -22,6 +24,7 @@
 #' plot(f0, type = "l")
 #' sum(f0)
 #' f1 <- model_fert(tfr = 2.1, model = f0)
+#' sum(f1)
 #' plot(f1, type = "l")
 #'
 #' #five year
@@ -30,7 +33,7 @@
 model_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                        model = NULL,
                        start_fertage = 15, width_fertage = 35, model_ages = "auto"){
-  if(model_ages %in% c("auto", "fertage", "all"))
+  if(!(model_ages %in% c("auto", "fertage", "all")))
     stop("model_ages must be set to either `auto`, `all` or `fertage`")
   s <- start_fertage
   w <- width_fertage
@@ -50,8 +53,6 @@ model_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
     f1 <- rep(0, length(x))
     f1[x %in% xx] <- f0
   }
-
-
 
   f2 <- tfr * f1/sum(f1)
   return(f2)

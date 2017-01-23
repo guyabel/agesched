@@ -1,12 +1,10 @@
 library("readxl")
 library("tidyverse")
 
-setwd(getwd())
-
-df1 <- read_excel("austria.xlsx", sheet = 1, skip = 2)
-df2 <- read_excel("austria.xlsx", sheet = 2, skip = 2)
-df3 <- read_excel("austria.xlsx", sheet = 3, skip = 2)
-df4 <- read_excel("austria.xlsx", sheet = 4, skip = 2)
+df1 <- read_excel("data-raw/austria.xlsx", sheet = 1, skip = 2)
+df2 <- read_excel("data-raw/austria.xlsx", sheet = 2, skip = 2)
+df3 <- read_excel("data-raw/austria.xlsx", sheet = 3, skip = 2)
+df4 <- read_excel("data-raw/austria.xlsx", sheet = 4, skip = 2)
 
 #lots of warning messages
 #take care of age labels in hfd
@@ -35,5 +33,6 @@ df0 <- df3 %>%
 
 austria <- df0
 rm(df0, df1, df2, df3, df4)
+save(austria, file = "data/austria.rda")
 
-un1956 <- read_excel("iussp.xlsx", sheet = 4)
+

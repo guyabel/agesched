@@ -1,4 +1,3 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^.*\iussp.xlsx
-^.*\austria.xlsx
+^data-raw$
