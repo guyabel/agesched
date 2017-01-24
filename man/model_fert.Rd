@@ -28,7 +28,7 @@ The arguments for the start and width of the fertility age range (\code{start_fe
 If the model schedule covers both fertility and non-fertility age ranges, set \code{model_age} to \code{all} to ignore the values passed to \code{start_fertage}, \code{start_fertage}, \code{x}. The \code{auto} option attempts to guess, based on the length of the vetor passed to \code{model} and the age groups used in \code{x}.
 }
 \description{
-Model Fertility Model Schedule.
+Scales a `model`` fertility schedule to match a given TFR.
 }
 \examples{
 #single year
@@ -36,6 +36,7 @@ f0 <- subset(austria, Year == 2014)$Fx
 plot(f0, type = "l")
 sum(f0)
 f1 <- model_fert(tfr = 2.1, model = f0)
+sum(f1)
 plot(f1, type = "l")
 
 #five year

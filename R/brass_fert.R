@@ -1,18 +1,48 @@
 #' Brass's Relational Gompertz Model of Fertility
 #'
+#' Brass' relational Gompertz model of fertility makes use of a standard fertility schedule that is linearised using
+#' \deqn{Y_s(x) = -ln [ -ln( F_s(x) ) ]}
+#' where \eqn{\Y_s(x)} is the standardised transformed age schedule and \eqn{F_s(x)} is the culmative fertility function of the standardised model schedule, scaled to sum to 1.
+#'
+#' The modified transformed age schedule is formed by adjusting the standardised transformed age schedule into an alternative other straight line
+#' \deqn{Y_m(x) = \alpha + \beta Y_s(x)}
+#' where \eqn{\beta} changes the slope and \eqn{\alpha} the intercept.
+#'
+#' The modified transformed age schedule is converted back into a fertility schedule by applying the anti-function used to linearise the standard schedule.
+#'
 #' @param tfr Numeric value for total fertitliy rate of the returned age schedule.
 #' @param x Vector for the sequence of ages.
-#' @param model Vector of a `model` age specific fertility rates.
-#' @param alpha
-#' @param beta
+#' @param model Vector of a `model` age specific fertility rates. Will be used to derive the standardised transformed age schedule, \eqn{\Y_s(x)} above.
+#' @param alpha Numeric value for intercept adjustment to the standardised transformed age schedule
+#' @param beta Numeric value for slope adjustment to the standardised transformed age schedule
 #' @param start_fertage Numeric value for the start of the fertility age range.
 #' @param width_fertage Numeric value for the width of the fertility age range.
 #' @param model_age String value to indicate if model is for fertility age range only or all ages.
 #'
-#' @return
+#' @return Returns the f(x) values from a relational model schedule of age specific fertility. The age range for the calculation can take any sequence of positive numbers, such as ages in single or 5-year intervals. The function is primarily intended for use in decomposing a total fertility rate into an age-specific values.
+#'
+#' The \code{alpha} and \code{beta} parameters relate a modified schedule to the schedule provided by the \code{model} argument. The arguments for the start and width of the fertility age range (\code{start_fertage}, \code{width_fertage}) are used to select where the model distribution is applied over the range of ages given in \code{x}. Ensure that these match those of the model age schedule.
+#'
+#' If the model schedule covers both fertility and non-fertility age ranges, set \code{model_age} to \code{all} to ignore the values passed to \code{start_fertage}, \code{start_fertage}, \code{x}. The \code{auto} option attempts to guess, based on the length of the vetor passed to \code{model} and the age groups used in \code{x}.
+#'
+#' @author Guy J. Abel
+#' @seealso \code{\link{gage}} \code{\link{romainuk}} \code{\link{hadwiger}}
+#'
 #' @export
 #'
 #' @examples
+#' #single year
+#' f0 <- subset(austria, Year == 2014)$Fx
+#' plot(f0, type = "l")
+#' sum(f0)
+#' f1 <- brass_fert(tfr = 2.1, model = f0, alpha = 0.1, beta = 1.1)
+#' sum(f1)
+#' plot(f1, type = "l")
+#' lines(f0, col = "red")
+#'
+#' #five year
+#' f1 <- brass_fert(tfr = 3, x = seq(from = 0, to = 100, by = 5), model = un1956$high, alpha = -0.1, beta = 0.9)
+#' plot(f1, type = "l")
 brass_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                        model = NULL, alpha = 0, beta = 1,
                        start_fertage = 15, width_fertage = 35, model_ages = "auto"){
@@ -23,7 +53,7 @@ brass_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
   a <- unique(diff(x))
   xx <- seq(from = s, by = a, length.out = w/a)
 
-  # f0 <- model
+  f0 <- model
   f1 <- f0/sum(f0)
   F0 <- cumsum(f1)
   F1 <- -log(-log(F0))
@@ -38,9 +68,10 @@ brass_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
     if(length(model)>9 & a == 5)
       f3 <- f2
   }
-  if(is.null(f1) | model_ages == "fertage"){
+  if(is.null(f3) | model_ages == "fertage"){
     f3 <- rep(0, length(x))
     f3[x %in% xx] <- f2
   }
   return(f3)
 }
+
