@@ -7,7 +7,7 @@ ui <- fluidPage(
     tabsetPanel(
       tabPanel(
         title = "Brass",
-        fluidRow(
+        fluidRow( 
           column(width = 4, sliderInput(inputId = "alpha1", label = "alpha", value = 0, step = 0.1, min = -5, max = 5)),
           column(width = 4, sliderInput(inputId = "beta1", label = "beta", value = 1, step = 0.1, min = 0.5, max = 2))
         ),
