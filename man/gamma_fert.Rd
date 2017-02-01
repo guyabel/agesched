@@ -41,14 +41,13 @@ f0 <- gamma_fert(tfr = 4, mean_cb = 25, shape = 5)
 plot(f0, type = "l")
 
 #five year
-f1 <- gamma_fert(tfr = 5.8, x = seq(from = 0, to = 100, by = 5), shape = 3)
+f1 <- gamma_fert(tfr = 5.8, mean_cb = 28, x = seq(from = 0, to = 100, by = 5), shape = 3)
 plot(f1, type = "l")
-sum(f1)
-}
-\author{
-Guy J. Abel
+sum(f1) * 5
 }
 \seealso{
 \code{\link{gage}} \code{\link{romainuk}} \code{\link{hadwiger}}
 }
-
+\author{
+Guy J. Abel
+}

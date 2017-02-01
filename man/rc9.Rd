@@ -66,9 +66,6 @@ f1 <- rc9(tot_mig = 0.05, x = seq(0, 100, 5),
 plot(f1, type = "l")
 sum(f1)
 }
-\author{
-Guy J. Abel
-}
 \references{
 Rogers, A. and Castro. L. J. (1981). Model Migration Schedules. \emph{IIASA Research Report 81} RR-81-30
 
@@ -77,4 +74,6 @@ Rogers, A., Little, J. and Raymer J. (2010). \emph{The Indirect Estimation of Mi
 \seealso{
 \code{\link{rc7}}, \code{\link{rc11}}, \code{\link{rc13}}
 }
-
+\author{
+Guy J. Abel
+}

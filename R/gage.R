@@ -30,17 +30,21 @@
 #' #five year
 #' f1 <- gage(tfr = 5.8, x = seq(from = 0, to = 100, by = 5))
 #' plot(f1, type = "l")
-#' sum(f1)
+#' sum(f1) * 5
 gage <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                  start_fertage = 15, width_fertage = 35, c = 12 * w^-4 * tfr,
                  scaled = TRUE){
   s <- start_fertage
   w <- width_fertage
-  xx <- seq(from = s, to = s + w, by = unique(diff(x)))
+  a <- unique(diff(x))
+  xx0 <- xx <- seq(from = s, to = s + w, by = a)
+  if(a>1)
+    xx <- xx + a/2
+
   f0 <- c * (xx - s) * (s + w - xx)^2
   f1 <- rep(0, length(x))
-  f1[x %in% xx] <- f0
-  f2 <- tfr *f1/sum(f1)
+  f1[x %in% xx0] <- f0
+  f2 <- tfr *f1/sum(f1) * 1/a
   if(scaled == TRUE)
     return(f2)
   if(scaled == FALSE)
