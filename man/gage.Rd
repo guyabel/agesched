@@ -40,10 +40,7 @@ plot(f0, type = "l")
 #five year
 f1 <- gage(tfr = 5.8, x = seq(from = 0, to = 100, by = 5))
 plot(f1, type = "l")
-sum(f1)
-}
-\author{
-Guy J. Abel
+sum(f1) * 5
 }
 \references{
 Gage, T. B. (2001). `Age-specific fecundity of mammalian populations: A test of three mathematical models`. \emph{Zoo Biology} 20(6):487-499.
@@ -53,4 +50,6 @@ Brass, W. (1975). \emph{Methods for Estimating Fertility and Mortality from Limi
 \seealso{
 \code{\link{.}}
 }
-
+\author{
+Guy J. Abel
+}

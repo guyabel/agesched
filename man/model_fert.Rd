@@ -43,10 +43,9 @@ plot(f1, type = "l")
 f1 <- model_fert(tfr = 3, x = seq(from = 0, to = 100, by = 5), model = un1956$high)
 plot(f1, type = "l")
 }
-\author{
-Guy J. Abel
-}
 \seealso{
 \code{\link{gage}} \code{\link{romainuk}} \code{\link{hadwiger}}
 }
-
+\author{
+Guy J. Abel
+}

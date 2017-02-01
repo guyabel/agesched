@@ -1,8 +1,8 @@
 #' Hadwiger Fertility Model Schedule.
 #'
 #' Provides a scaled Hadwiger fertility schedule,
-#'\deqn{ f(x) = \frac{H}{T \sqrt{\pi}}  \left\( \frac{T}{x - d} \right\) ^ \frac{3}{2}
-#'\exp \left\{-H^2 \left\(\frac{T}{x-d} \frac{x-d}{T} -2\right\) \right\} }
+#'\deqn{f(x) = \frac{H}{T \sqrt{\pi}}  \left( \frac{T}{x - d} \right) ^ \frac{3}{2}
+#'             \exp \left\{-H^2 \left(\frac{T}{x-d} \frac{x-d}{T} -2\right) \right\} }
 #' for a given set of parameter values and sequence of ages.
 #'
 #' @param tfr Numeric value for total fertitliy rate of the returned age schedule.
@@ -35,25 +35,25 @@
 #' #five year
 #' f1 <- hadwiger(tfr = 5.8, x = seq(from = 0, to = 100, by = 5), H = 3, T = 26, d = 2, width_fertage = 40)
 #' plot(f1, type = "l")
-#' sum(f1)
+#' sum(f1) * 5
 hadwiger <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                      H = NULL, T = NULL, d = NULL,
                      start_fertage = 15, width_fertage = 35,
                      scaled = TRUE){
-
   s <- start_fertage
   w <- width_fertage
-  xx <- seq(from = s, to = s + w, by = unique(diff(x)))
+  a <- unique(diff(x))
+  xx0 <- xx <- seq(from = s, to = s + w, by = a)
+  if(a>1)
+    xx <- xx + a/2
 
   f0 <- H /(T*sqrt(pi)) * ((T/(xx - d)) ^ 1.5) * exp(-(H^2) * (((T^2 + (xx - d)^2)/(T*(xx-d)))-2))
-
   f1 <- rep(0, length(x))
-  f1[x %in% xx] <- f0
+  f1[x %in% xx0] <- f0
 
-  f2 <- tfr * f1/sum(f1)
+  f2 <- tfr * f1/sum(f1) * 1/a
   if(scaled == TRUE)
     return(f2)
   if(scaled == FALSE)
     return(f0)
 }
-
