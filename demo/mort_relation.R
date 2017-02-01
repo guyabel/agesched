@@ -2,7 +2,7 @@ library(shiny)
 library(tidyverse)
 
 ui <- fluidPage(
-  titlePanel("Relational Models of Mortility"),
+  titlePanel("Relational Models of Mortality"),
   mainPanel(
     tabsetPanel(
       tabPanel(
@@ -12,7 +12,8 @@ ui <- fluidPage(
           column(width = 4, sliderInput(inputId = "beta1", label = "beta", value = 1, step = 0.1, min = 0.5, max = 2))
         ),
         plotOutput("plot1"),
-        verbatimTextOutput("text1")
+        verbatimTextOutput("text1"),
+        verbatimTextOutput("text2")
       )
     )
   )
@@ -21,23 +22,26 @@ ui <- fluidPage(
 server <- function(input, output){
   output$plot1 <- renderPlot({
     df0 <- subset(austria, Year == 2014)
-    df0$lx_f <- df0$Lx_f + df0$Dx_f/2
-    f0 <- df0$lx_f
-
-    df1 <- brass_mort(model = f0, x = df0$Age, alpha = input$alpha1, beta = input$beta1)
+    f0 <- df0$Lx_f
+    f1 <- brass_mort(model = f0, x = df0$Age, alpha = input$alpha1, beta = input$beta1)
+    df1 <- data_frame(Age = df0$Age, Relational = f1, Model = f0) %>%
+      gather(key = "Schedule", value = "Lx", -Age)
     ggplot(data = df1,
-           mapping = aes(x = x)) +
-      geom_line(mapping = aes(y = lx_s)) +
-      geom_line(mapping = aes(y = lx, colour = "red")) +
-      labs(y = "lx", x = "Age") +
+           mapping = aes(x = Age, y = Lx, colour = Schedule)) +
+      geom_line() +
       theme_bw() 
   })
   output$text1 <- renderPrint(
-    
-    print(
-      brass_mort(model = f0, x = df0$Age, alpha = input$alpha1, beta = input$beta1) %>% 
-            select(lx_s, lx, ex)
-          )
+    paste0("Model e0: ", round(sum(f0)/100000,3))
+  )
+  print_f1 <- reactive({
+    df0 <- subset(austria, Year == 2014)
+    f0 <- df0$Lx_f
+    f1 <- brass_mort(model = f0, x = df0$Age, alpha = input$alpha1, beta = input$beta1)
+    paste0("Model e0: ", round(sum(f1)/100000,3)) 
+  })
+  output$text2 <- renderPrint(
+    print_f1()
   )
 }
 shinyApp(ui = ui, server =  server)
