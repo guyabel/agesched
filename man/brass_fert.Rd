@@ -33,7 +33,7 @@ The \code{alpha} and \code{beta} parameters relate a modified schedule to the sc
 If the model schedule covers both fertility and non-fertility age ranges, set \code{model_age} to \code{all} to ignore the values passed to \code{start_fertage}, \code{start_fertage}, \code{x}. The \code{auto} option attempts to guess, based on the length of the vetor passed to \code{model} and the age groups used in \code{x}.
 }
 \description{
-Brass' relational Gompertz model of fertility makes use of a standard fertility schedule that is linearised using
+Brass’ relational Gompertz model of fertility makes use of a standard fertility schedule that is linearised using
 \deqn{Y_s(x) = -ln [ -ln( F_s(x) ) ]}
 where \eqn{\Y_s(x)} is the standardised transformed age schedule and \eqn{F_s(x)} is the culmative fertility function of the standardised model schedule, scaled to sum to 1.
 }
@@ -58,9 +58,10 @@ lines(f0, col = "red")
 f1 <- brass_fert(tfr = 3, x = seq(from = 0, to = 100, by = 5), model = un1956$high, alpha = -0.1, beta = 0.9)
 plot(f1, type = "l")
 }
-\seealso{
-\code{\link{gage}} \code{\link{romainuk}} \code{\link{hadwiger}}
-}
 \author{
 Guy J. Abel
 }
+\seealso{
+\code{\link{gage}} \code{\link{romainuk}} \code{\link{hadwiger}}
+}
+

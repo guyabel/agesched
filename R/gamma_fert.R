@@ -27,18 +27,16 @@
 #' plot(f0, type = "l")
 #'
 #' #five year
-#' f1 <- gamma_fert(tfr = 5.8, mean_cb = 28, x = seq(from = 0, to = 100, by = 5), shape = 3)
+#' f1 <- gamma_fert(tfr = 5.8, x = seq(from = 0, to = 100, by = 5), shape = 3)
 #' plot(f1, type = "l")
-#' sum(f1) * 5
+#' sum(f1)
 gamma_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                        mean_cb = NULL, shape = NULL,
                        start_fertage = 15, width_fertage = 35, ...){
   s <- start_fertage
   w <- width_fertage
   a <- unique(diff(x))
-  xx0 <- xx <- seq(from = s, to = s + w, by = a)
-  if(a>1)
-    xx <- xx + a/2
+  xx <- seq(from = s, to = s + w, by = a)
 
   k <- shape
   theta <- (mean_cb-s) / k
@@ -46,9 +44,8 @@ gamma_fert <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
   f0 <- dgamma(1:length(xx), shape = k, scale = theta, ...)
 
   f1 <- rep(0, length(x))
-  f1[x %in% xx0] <- f0
+  f1[x %in% xx] <- f0
 
-  f2 <- tfr * f1/sum(f1) * 1/a
+  f2 <- tfr * f1/sum(f1)
   return(f2)
 }
-

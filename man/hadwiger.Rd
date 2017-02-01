@@ -36,8 +36,8 @@ The adapted version in this function, to allow scaling to a known TFR, was based
 }
 \description{
 Provides a scaled Hadwiger fertility schedule,
-\deqn{f(x) = \frac{H}{T \sqrt{\pi}}  \left( \frac{T}{x - d} \right) ^ \frac{3}{2}
-            \exp \left\{-H^2 \left(\frac{T}{x-d} \frac{x-d}{T} -2\right) \right\} }
+\deqn{ f(x) = \frac{H}{T \sqrt{\pi}}  \left\( \frac{T}{x - d} \right\) ^ \frac{3}{2}
+\exp \left\{-H^2 \left\(\frac{T}{x-d} \frac{x-d}{T} -2\right\) \right\} }
 for a given set of parameter values and sequence of ages.
 }
 \examples{
@@ -48,7 +48,10 @@ plot(f0, type = "l")
 #five year
 f1 <- hadwiger(tfr = 5.8, x = seq(from = 0, to = 100, by = 5), H = 3, T = 26, d = 2, width_fertage = 40)
 plot(f1, type = "l")
-sum(f1) * 5
+sum(f1)
+}
+\author{
+Guy J. Abel
 }
 \references{
 Gilje E. and Yntema L. (1970). `The shifted Hadwiger fertility function`. Working Paper No IO70/14. \emph{Oslo: Central Bureau of Statistics of Norway.}
@@ -58,6 +61,4 @@ Hadwiger H. (1940). Eine analytische Reprodutionsfunktion fur biologische Gesamt
 \seealso{
 \code{\link{.}}
 }
-\author{
-Guy J. Abel
-}
+

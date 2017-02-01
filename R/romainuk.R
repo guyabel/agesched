@@ -1,7 +1,8 @@
 #' Romaniuk Fertility Model Schedule.
 #'
 #' Provides a scaled Romaniuk fertility schedule,
-#'\deqn{ f(x) = f(x) = \left( 1 + \frac{x}{m-\alpha} \right) ^\left\{ \frac{(M-\alpha) [\beta-2(A-\alpha)]}{\beta(A-M)} \right\}\left( 1 - \frac{x}{\delta - M + \alpha} \right)^\left\{ \frac{(\delta - M+\alpha)[\delta-2(A-\alpha)]}{\delta(A-M)} \right\}  }
+#'\deqn{ f(x) = T \left\( 1 + \frac{x}{m-\alpha}            \right\)^\left\{ \frac{(m-\alpha)         [\beta-2(a-\alpha)]}{\beta(a-m)} \right\}
+#'                \left\( 1 - \frac{x}{\delta - M + \alpha} \right\)^\left\{ \frac{(\delta - M+\alpha)[\beta-2(a-\alpha)]}{\beta(a-m)} \right\}  }
 #' for a given set of parameter values and sequence of ages.
 #'
 #' @param tfr Total fertility rate of the returned age schedule. Equivalent to \eqn{\T} in the equation above.
@@ -32,33 +33,27 @@
 #' #five year
 #' f1 <- romaniuk(tfr = 5.8, x = seq(0, 100, 5), mean_cb = 28, mode_cb = 23)
 #' plot(f1, type = "l")
-#' sum(f1) * 5
+#' sum(f1)
 romaniuk <- function(tfr = NULL, x = seq(from = 0, to = 100, by = 1),
                      mean_cb = NULL, mode_cb = NULL,
                      start_fertage = 15, width_fertage = 35,
                      scaled = TRUE){
   if(mean_cb <= mode_cb)
     stop("mean age of child birth must be higher than modal age")
-  #start_fertage = 15; width_fertage = 35; mean_cb = 30; mode_cb = 25; tfr = 2.1; x = seq(from = 0, to = 100, by = 5)
+
   alpha <- start_fertage
   delta <- width_fertage
   m1 <- ((mode_cb - alpha) * (delta - 2 * (mean_cb - alpha))) / (delta * (mean_cb - mode_cb))
   m2 <- ((delta - mode_cb + alpha)* (delta - 2 * (mean_cb - alpha))) / (delta * (mean_cb - mode_cb))
 
-  a <- unique(diff(x))
-  xx0 <- seq(from = alpha, to = alpha + delta, by = a)
-  xx <- xx0 - mode_cb
-  if(a>1)
-    xx <- xx + a/2
-
+  xx <- seq(from = alpha, to = alpha + delta, by = unique(diff(x))) - mode_cb
   f0 <- (1 + xx / (mode_cb - alpha)) ^ m1 * (1 - xx / (delta - mode_cb + alpha)) ^ m2
   f0[is.nan(f0)] <- 0
-  f0[is.infinite(f0)] <- 0
 
   f1 <- rep(0, length(x))
-  f1[x %in% xx0] <- f0
+  f1[x %in% (xx + mode_cb)] <- f0
 
-  f2 <- tfr * f1/sum(f1) * 1/a
+  f2 <- tfr *f1/sum(f1)
   if(scaled == TRUE)
     return(f2)
   if(scaled == FALSE)

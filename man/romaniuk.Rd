@@ -31,7 +31,8 @@ Also known as Mitra`s Pearsonian Type I function or Beta funtion. The adapted ve
 }
 \description{
 Provides a scaled Romaniuk fertility schedule,
-\deqn{ f(x) = f(x) = \left( 1 + \frac{x}{m-\alpha} \right) ^\left\{ \frac{(M-\alpha) [\beta-2(A-\alpha)]}{\beta(A-M)} \right\}\left( 1 - \frac{x}{\delta - M + \alpha} \right)^\left\{ \frac{(\delta - M+\alpha)[\delta-2(A-\alpha)]}{\delta(A-M)} \right\}  }
+\deqn{ f(x) = T \left\( 1 + \frac{x}{m-\alpha}            \right\)^\left\{ \frac{(m-\alpha)         [\beta-2(a-\alpha)]}{\beta(a-m)} \right\}
+               \left\( 1 - \frac{x}{\delta - M + \alpha} \right\)^\left\{ \frac{(\delta - M+\alpha)[\beta-2(a-\alpha)]}{\beta(a-m)} \right\}  }
 for a given set of parameter values and sequence of ages.
 }
 \examples{
@@ -42,7 +43,10 @@ plot(f0, type = "l")
 #five year
 f1 <- romaniuk(tfr = 5.8, x = seq(0, 100, 5), mean_cb = 28, mode_cb = 23)
 plot(f1, type = "l")
-sum(f1) * 5
+sum(f1)
+}
+\author{
+Guy J. Abel
 }
 \references{
 Romaniuk, A. (1973). "A three parameter mode for birth projections", \emph{Population Studies} 27(3):467-478. doi 10.2307/2173766
@@ -52,6 +56,4 @@ Mitra, S. and Romaniuk, A. (1973). `Pearsonian Type I Curve and its Fertility Pr
 \seealso{
 \code{\link{.}}
 }
-\author{
-Guy J. Abel
-}
+
